@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOVEREIGN | Privacy Audit Suite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;800&display=swap" rel="stylesheet">
+    <style>
+        body { background: #050505; color: #fff; font-family: 'JetBrains Mono', monospace; }
+        .risk-red { color: #ef4444; border-color: #ef4444; box-shadow: 0 0 20px rgba(239, 68, 68, 0.2); }
+        .risk-green { color: #22c55e; border-color: #22c55e; }
+        .glass { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 1.5rem; }
+    </style>
+</head>
+<body class="p-4 md:p-12">
+
+    <div class="max-w-5xl mx-auto">
+        <header class="mb-12 flex justify-between items-end border-b border-zinc-900 pb-8">
+            <div>
+                <h1 class="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.5em] mb-2">Digital Forensic Unit</h1>
+                <h2 class="text-3xl font-black italic uppercase">Privacy <span class="text-zinc-700">Audit</span></h2>
+            </div>
+            <div class="text-right">
+                <p class="text-[8px] font-bold text-zinc-700 uppercase">Status: Armed</p>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            <!-- LEFT: DROPZONE -->
+            <div class="space-y-6">
+                <div class="glass p-10 text-center relative border-dashed border-2 border-zinc-800 hover:border-blue-500 transition-all">
+                    <input type="file" id="fileInput" class="hidden" onchange="processFile(this)">
+                    <label for="fileInput" class="cursor-pointer">
+                        <p class="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-4">Drop Asset for Forensic Analysis</p>
+                        <div class="w-16 h-16 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        </div>
+                        <p class="text-[10px] text-zinc-700 uppercase">Supports JPG, PNG, TIFF</p>
+                    </label>
+                </div>
+
+                <!-- PREVIEW BOX -->
+                <div id="previewContainer" class="hidden glass p-4 overflow-hidden">
+                    <img id="previewImg" class="w-full rounded-lg filter grayscale opacity-50">
+                </div>
+            </div>
+
+            <!-- RIGHT: AUDIT RESULTS -->
+            <div id="auditBox" class="hidden glass p-10 space-y-8">
+                <div>
+                    <h3 class="text-xs font-bold uppercase text-zinc-500 tracking-widest mb-6">Security Scan Report</h3>
+                    <div id="riskLevel" class="p-4 border-2 rounded-xl text-center font-black uppercase text-sm mb-8">
+                        RISK: ANALYZING...
+                    </div>
+                </div>
+
+                <div class="space-y-4 text-[10px] uppercase font-bold">
+                    <div class="flex justify-between border-b border-zinc-900 pb-2">
+                        <span class="text-zinc-600">Location Data:</span>
+                        <span id="resGPS" class="text-zinc-400">Not Found</span>
+                    </div>
+                    <div class="flex justify-between border-b border-zinc-900 pb-2">
+                        <span class="text-zinc-600">Device Signature:</span>
+                        <span id="resDevice" class="text-zinc-400">None</span>
+                    </div>
+                    <div class="flex justify-between border-b border-zinc-900 pb-2">
+                        <span class="text-zinc-600">Software Trail:</span>
+                        <span id="resSoftware" class="text-zinc-400">None</span>
+                    </div>
+                </div>
+
+                <div class="pt-6">
+                    <button onclick="scrubAndDownload()" class="w-full py-5 bg-blue-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all">Execute Ghost Scrub</button>
+                    <p class="text-[8px] text-zinc-700 text-center mt-4 uppercase">100% Client-Side Purge. No data leaves your machine.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        let currentFile;
+
+        function processFile(input) {
+            const file = input.files[0];
+            if (!file) return;
+            currentFile = file;
+
+            document.getElementById('auditBox').classList.remove('hidden');
+            document.getElementById('previewContainer').classList.remove('hidden');
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('previewImg').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+
+            // Forensic EXIF Extract
+            EXIF.getData(file, function() {
+                const gps = EXIF.getTag(this, "GPSLatitude");
+                const make = EXIF.getTag(this, "Make");
+                const soft = EXIF.getTag(this, "Software");
+
+                const resGPS = document.getElementById('resGPS');
+                const resDevice = document.getElementById('resDevice');
+                const resSoft = document.getElementById('resSoftware');
+                const risk = document.getElementById('riskLevel');
+
+                if(gps) {
+                    resGPS.innerText = "EXPOSED (GPS ATTACHED)";
+                    resGPS.classList.add('text-red-500');
+                    risk.innerText = "RISK: CRITICAL";
+                    risk.classList.add('risk-red');
+                } else {
+                    resGPS.innerText = "CLEAR";
+                    resGPS.classList.add('text-green-500');
+                    risk.innerText = "RISK: LOW";
+                    risk.classList.add('risk-green');
+                }
+
+                resDevice.innerText = make || "ANONYMOUS";
+                resSoft.innerText = soft || "UNKNOWN";
+            });
+        }
+
+        function scrubAndDownload() {
+            const img = document.getElementById('previewImg');
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = img.naturalWidth;
+            canvas.height = img.naturalHeight;
+            ctx.drawImage(img, 0, 0);
+
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `scrubbed_${currentFile.name}`;
+                a.click();
+            }, 'image/jpeg', 0.95);
+        }
+    </script>
+</body>
+  </html>
+  
